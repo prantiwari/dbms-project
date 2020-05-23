@@ -14,6 +14,51 @@ class _ComplaintsState extends State<Complaints> {
     var messages = (_firestore.collection('compaints').getDocuments());
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Compaints"),
+        actions: <Widget>[
+          Container(
+            margin: EdgeInsets.all(10),
+            color: Colors.white,
+            child: new DropdownButton<String>(
+              iconDisabledColor: Colors.white,
+              value: 'Electrical',
+              items: <String>[
+                'Electrical',
+                'House-Keeping',
+                'Mess',
+                'Miscellaneous'
+              ].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (changedValue) {
+                setState(() {});
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            color: Colors.white,
+            child: new DropdownButton<String>(
+              iconDisabledColor: Colors.white,
+              value: 'Unresolved',
+              items: <String>['Resolved', 'Processing', 'Unresolved']
+                  .map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (changedValue) {
+                setState(() {});
+              },
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
@@ -51,9 +96,13 @@ class ComplaintCard extends StatelessWidget {
   final Text description;
   final Text registrationNumber;
   final Text complaintHeader;
+  final String documentId;
 
   ComplaintCard(
-      {this.description, this.registrationNumber, this.complaintHeader});
+      {this.description,
+      this.registrationNumber,
+      this.complaintHeader,
+      this.documentId});
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +115,7 @@ class ComplaintCard extends StatelessWidget {
                 registrationNumber: registrationNumber,
                 complaintHeader: complaintHeader,
                 description: description,
+                documentId: documentId,
               ),
             ));
       },
