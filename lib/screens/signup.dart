@@ -1,9 +1,8 @@
-import 'package:dbmsj/screens/complaints.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class SignIn extends StatelessWidget {
+class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = FirebaseAuth.instance;
@@ -50,12 +49,9 @@ class SignIn extends StatelessWidget {
                     child: Icon(Icons.near_me, size: 50),
                     onPressed: () async {
                       try {
-                        final newUser = await _auth.signInWithEmailAndPassword(
-                            email: emailid, password: password);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Complaints()));
+                        final newUser =
+                            await _auth.createUserWithEmailAndPassword(
+                                email: emailid, password: password);
                       } catch (e) {
                         print(e);
                       }

@@ -5,7 +5,9 @@ class Forms extends StatelessWidget {
   final _firestore = Firestore.instance;
   @override
   Widget build(BuildContext context) {
-    var desc;
+    var registrationNo;
+    var complaintHeader;
+    var description;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -25,7 +27,7 @@ class Forms extends StatelessWidget {
                         border: OutlineInputBorder(),
                         hintText: 'Registration No.'),
                     onChanged: (value) {
-                      desc = value;
+                      registrationNo = value;
                     },
                   ),
                 ),
@@ -33,9 +35,10 @@ class Forms extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), hintText: 'Room No.'),
+                        border: OutlineInputBorder(),
+                        hintText: 'Complaint Header'),
                     onChanged: (value) {
-                      desc = value;
+                      complaintHeader = value;
                     },
                   ),
                 ),
@@ -68,6 +71,9 @@ class Forms extends StatelessWidget {
                       border: OutlineInputBorder(),
                       hintText: "Complaint Description",
                     ),
+                    onChanged: (value) {
+                      description = value;
+                    },
                   ),
                 ),
                 Center(
@@ -75,8 +81,14 @@ class Forms extends StatelessWidget {
                     child: Icon(Icons.near_me, size: 50),
                     onPressed: () {
                       _firestore
-                          .collection('complaints')
-                          .add({'description': desc});
+                          .collection('Electrical')
+                          .document('Electrical-Complaints')
+                          .collection('Processing')
+                          .add({
+                        'Complaint': complaintHeader,
+                        'Description': description,
+                        'Student Reg. No.': registrationNo
+                      });
                     },
                   ),
                 )

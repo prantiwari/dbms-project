@@ -1,4 +1,5 @@
 import 'package:dbmsj/screens/homepage.dart';
+import 'package:dbmsj/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:dbmsj/screens/signin.dart';
 import 'package:dbmsj/screens/complaints.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.purple,
           scaffoldBackgroundColor: Color(0xFF0A0E21),
           textTheme: TextTheme(body1: TextStyle(color: Colors.white))),
-      home: HomePage(),
+      home: SignIn(),
     );
   }
 }
