@@ -1,25 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum state { Unresolved, Resolved, Processing }
 
 class Complaint extends StatefulWidget {
-  Text description;
-  Text complaintHeader;
-  Text registrationNumber;
+  var message;
+  String description;
+  String complaintHeader;
+  String registrationNumber;
   String documentId;
-  Complaint(
-      {this.description,
-      this.complaintHeader,
-      this.registrationNumber,
-      this.documentId});
+  Complaint(var message) {
+    this.message = message;
+    this.description = message['Description'];
+    this.registrationNumber = message['Student Reg. No.'];
+    this.complaintHeader = message['Complaint'];
+    this.documentId = message.documentID;
+  }
 
   @override
   _ComplaintState createState() => _ComplaintState();
 }
 
 class _ComplaintState extends State<Complaint> {
-  String newValue = 'Unresolved';
+  var _firestore = Firestore.instance;
+  String newValue = 'Processing';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +41,11 @@ class _ComplaintState extends State<Complaint> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("Registration Number: " + widget.registrationNumber.data),
+                Text("Registration Number: " + widget.registrationNumber),
                 SizedBox(height: 10),
-                Text("Complaint Header: " + widget.complaintHeader.data),
+                Text("Complaint Header: " + widget.complaintHeader),
                 SizedBox(height: 20),
-                Text("Description: " + widget.description.data),
+                Text("Description: " + widget.description),
                 SizedBox(height: 20),
                 Container(
                   color: Colors.white,
@@ -55,9 +60,20 @@ class _ComplaintState extends State<Complaint> {
                       );
                     }).toList(),
                     onChanged: (changedValue) {
-                      setState(() {
-                        newValue = changedValue;
-                      });
+                      _firestore
+                          .collection('Electrical')
+                          .document('Electrical-Complaints')
+                          .collection('Processing')
+                          .document(widget.message.documentID)
+                          .delete();
+
+                      _firestore
+                          .collection('Electrical')
+                          .document('Electrical-Complaints')
+                          .collection('Resolved')
+                          .add(widget.message.data);
+
+                      Navigator.pop(context);
                     },
                   ),
                 ),

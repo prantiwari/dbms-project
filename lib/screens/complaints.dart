@@ -3,6 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbmsj/complaint.dart';
 
 class Complaints extends StatefulWidget {
+  var complaintCategory = ["Processing", "Resolved", "Unresolved"];
+  int i;
+  Complaints() {
+    i = 0;
+  }
   @override
   _ComplaintsState createState() => _ComplaintsState();
 }
@@ -53,7 +58,9 @@ class _ComplaintsState extends State<Complaints> {
                 );
               }).toList(),
               onChanged: (changedValue) {
-                setState(() {});
+                setState(() {
+                  widget.i++;
+                });
               },
             ),
           ),
@@ -65,7 +72,7 @@ class _ComplaintsState extends State<Complaints> {
               stream: _firestore
                   .collection('Electrical')
                   .document('Electrical-Complaints')
-                  .collection('Processing')
+                  .collection(widget.complaintCategory[widget.i])
                   .snapshots(),
               //stream: _firestore.collection('complaints').snapshots(),
               builder: (context, snapshot) {
@@ -74,11 +81,7 @@ class _ComplaintsState extends State<Complaints> {
                   List<ComplaintCard> messageWidget = [];
                   for (var message in messages) {
                     messageWidget.add(
-                      ComplaintCard(
-                        description: Text(message['Description']),
-                        registrationNumber: Text(message['Student Reg. No.']),
-                        complaintHeader: Text(message['Complaint']),
-                      ),
+                      ComplaintCard(message),
                     );
                   }
                   return ListView(
@@ -93,16 +96,19 @@ class _ComplaintsState extends State<Complaints> {
 }
 
 class ComplaintCard extends StatelessWidget {
-  final Text description;
-  final Text registrationNumber;
-  final Text complaintHeader;
-  final String documentId;
+  String description;
+  String registrationNumber;
+  String complaintHeader;
+  String documentId;
+  var message;
 
-  ComplaintCard(
-      {this.description,
-      this.registrationNumber,
-      this.complaintHeader,
-      this.documentId});
+  ComplaintCard(var message) {
+    this.message = message;
+    this.description = message['Description'];
+    this.registrationNumber = message['Student Reg. No.'];
+    this.complaintHeader = message['Complaint'];
+    this.documentId = message.documentID;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,12 +117,7 @@ class ComplaintCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Complaint(
-                registrationNumber: registrationNumber,
-                complaintHeader: complaintHeader,
-                description: description,
-                documentId: documentId,
-              ),
+              builder: (context) => Complaint(message),
             ));
       },
       child: Container(
@@ -132,8 +133,8 @@ class ComplaintCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: 20),
-                complaintHeader,
-                registrationNumber,
+                Text(complaintHeader),
+                Text(registrationNumber),
               ],
             ),
           )),
