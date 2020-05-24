@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Forms extends StatelessWidget {
+class Forms extends StatefulWidget {
+  @override
+  _FormsState createState() => _FormsState();
+  var selected = "Electrical";
+}
+
+class _FormsState extends State<Forms> {
   final _firestore = Firestore.instance;
+
   @override
   Widget build(BuildContext context) {
+    var complaintTypes = [
+      'Electrical',
+      'House-Keeping',
+      'Mess',
+      'Miscellaneous'
+    ];
+
     var registrationNo;
     var complaintHeader;
     var description;
@@ -45,21 +59,18 @@ class Forms extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: new DropdownButton<String>(
-                    value: 'Complaint Type',
-                    items: <String>[
-                      'A',
-                      'B',
-                      'C',
-                      'D',
-                      'Room no',
-                      'Complaint Type'
-                    ].map((String value) {
+                    value: widget.selected,
+                    items: complaintTypes.map((String value) {
                       return new DropdownMenuItem<String>(
                         value: value,
                         child: new Text(value),
                       );
                     }).toList(),
-                    onChanged: (_) {},
+                    onChanged: (changedValue) {
+                      setState(() {
+                        widget.selected = changedValue;
+                      });
+                    },
                   ),
                 ),
                 Container(
@@ -78,19 +89,25 @@ class Forms extends StatelessWidget {
                 ),
                 Center(
                   child: FlatButton(
-                    child: Icon(Icons.near_me, size: 50),
-                    onPressed: () {
-                      _firestore
-                          .collection('Electrical')
-                          .document('Electrical-Complaints')
-                          .collection('Processing')
-                          .add({
-                        'Complaint': complaintHeader,
-                        'Description': description,
-                        'Student Reg. No.': registrationNo
-                      });
-                    },
-                  ),
+                      child: Icon(Icons.near_me, size: 50),
+                      onPressed: () {
+                        _firestore
+                            .collection(widget.selected)
+                            .document('Processing')
+                            .collection('Complaints')
+                            .add({
+                          'Complaint': complaintHeader,
+                          'Description': description,
+                          'Student Reg. No.': registrationNo,
+                          'State': 'Processing'
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Forms(),
+                          ),
+                        );
+                      }),
                 )
               ],
             ),

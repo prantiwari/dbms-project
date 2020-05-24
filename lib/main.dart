@@ -1,5 +1,6 @@
 import 'package:dbmsj/screens/homepage.dart';
 import 'package:dbmsj/screens/signup.dart';
+import 'package:dbmsj/screens/studentcomplaints.dart';
 import 'package:flutter/material.dart';
 import 'package:dbmsj/screens/signin.dart';
 import 'package:dbmsj/screens/complaints.dart';

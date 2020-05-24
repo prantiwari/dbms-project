@@ -3,44 +3,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbmsj/complaint.dart';
 
 class Complaints extends StatefulWidget {
-  var complaintCategory = ["Processing", "Resolved", "Unresolved"];
-  int i;
-  Complaints() {
-    i = 0;
-  }
+  var selectedCat = "House-Keeping";
+  var selectedState = "Processing";
+
   @override
   _ComplaintsState createState() => _ComplaintsState();
 }
 
 class _ComplaintsState extends State<Complaints> {
+  var complaintState = ["Processing", "Resolved", "Unresolved"];
+  var complaintTypes = ['Electrical', 'House-Keeping', 'Mess', 'Miscellaneous'];
   final _firestore = Firestore.instance;
+
   @override
   Widget build(BuildContext context) {
-    var messages = (_firestore.collection('compaints').getDocuments());
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Compaints"),
+        title: Text("Complaints"),
         actions: <Widget>[
           Container(
             margin: EdgeInsets.all(10),
             color: Colors.white,
             child: new DropdownButton<String>(
               iconDisabledColor: Colors.white,
-              value: 'Electrical',
-              items: <String>[
-                'Electrical',
-                'House-Keeping',
-                'Mess',
-                'Miscellaneous'
-              ].map((String value) {
+              value: widget.selectedCat,
+              items: complaintTypes.map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
                   child: new Text(value),
                 );
               }).toList(),
               onChanged: (changedValue) {
-                setState(() {});
+                setState(() {
+                  widget.selectedCat = changedValue;
+                });
               },
             ),
           ),
@@ -49,9 +45,8 @@ class _ComplaintsState extends State<Complaints> {
             color: Colors.white,
             child: new DropdownButton<String>(
               iconDisabledColor: Colors.white,
-              value: 'Unresolved',
-              items: <String>['Resolved', 'Processing', 'Unresolved']
-                  .map((String value) {
+              value: widget.selectedState,
+              items: complaintState.map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
                   child: new Text(value),
@@ -59,7 +54,7 @@ class _ComplaintsState extends State<Complaints> {
               }).toList(),
               onChanged: (changedValue) {
                 setState(() {
-                  widget.i++;
+                  widget.selectedState = changedValue;
                 });
               },
             ),
@@ -70,9 +65,9 @@ class _ComplaintsState extends State<Complaints> {
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
               stream: _firestore
-                  .collection('Electrical')
-                  .document('Electrical-Complaints')
-                  .collection(widget.complaintCategory[widget.i])
+                  .collection(widget.selectedCat)
+                  .document(widget.selectedState)
+                  .collection('Complaints')
                   .snapshots(),
               //stream: _firestore.collection('complaints').snapshots(),
               builder: (context, snapshot) {
@@ -81,7 +76,7 @@ class _ComplaintsState extends State<Complaints> {
                   List<ComplaintCard> messageWidget = [];
                   for (var message in messages) {
                     messageWidget.add(
-                      ComplaintCard(message),
+                      ComplaintCard(message, widget.selectedCat),
                     );
                   }
                   return ListView(
@@ -96,18 +91,20 @@ class _ComplaintsState extends State<Complaints> {
 }
 
 class ComplaintCard extends StatelessWidget {
+  String complaintType;
   String description;
   String registrationNumber;
   String complaintHeader;
   String documentId;
   var message;
 
-  ComplaintCard(var message) {
+  ComplaintCard(var message, String complaintType) {
     this.message = message;
     this.description = message['Description'];
     this.registrationNumber = message['Student Reg. No.'];
     this.complaintHeader = message['Complaint'];
     this.documentId = message.documentID;
+    this.complaintType = complaintType;
   }
 
   @override
@@ -115,10 +112,11 @@ class ComplaintCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Complaint(message),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => Complaint(message, complaintType),
+          ),
+        );
       },
       child: Container(
           margin: EdgeInsets.all(8),

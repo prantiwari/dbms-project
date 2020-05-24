@@ -10,12 +10,16 @@ class Complaint extends StatefulWidget {
   String complaintHeader;
   String registrationNumber;
   String documentId;
-  Complaint(var message) {
+  String state;
+  String complaintType;
+  Complaint(var message, String complaintType) {
     this.message = message;
     this.description = message['Description'];
     this.registrationNumber = message['Student Reg. No.'];
     this.complaintHeader = message['Complaint'];
     this.documentId = message.documentID;
+    this.state = message['State'];
+    this.complaintType = complaintType;
   }
 
   @override
@@ -24,7 +28,6 @@ class Complaint extends StatefulWidget {
 
 class _ComplaintState extends State<Complaint> {
   var _firestore = Firestore.instance;
-  String newValue = 'Processing';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +42,7 @@ class _ComplaintState extends State<Complaint> {
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text("Registration Number: " + widget.registrationNumber),
                 SizedBox(height: 10),
@@ -51,7 +54,7 @@ class _ComplaintState extends State<Complaint> {
                   color: Colors.white,
                   child: new DropdownButton<String>(
                     iconDisabledColor: Colors.white,
-                    value: newValue,
+                    value: widget.state,
                     items: <String>['Unresolved', 'Processing', 'Resolved']
                         .map((String value) {
                       return new DropdownMenuItem<String>(
@@ -60,18 +63,24 @@ class _ComplaintState extends State<Complaint> {
                       );
                     }).toList(),
                     onChanged: (changedValue) {
-                      _firestore
-                          .collection('Electrical')
-                          .document('Electrical-Complaints')
-                          .collection('Processing')
-                          .document(widget.message.documentID)
-                          .delete();
+                      if (changedValue != widget.state)
+                        _firestore
+                            .collection(widget.complaintType)
+                            .document(widget.state)
+                            .collection('Complaints')
+                            .document(widget.message.documentID)
+                            .delete();
 
                       _firestore
-                          .collection('Electrical')
-                          .document('Electrical-Complaints')
-                          .collection('Resolved')
-                          .add(widget.message.data);
+                          .collection(widget.complaintType)
+                          .document(changedValue)
+                          .collection('Complaints')
+                          .add({
+                        "Complaint": widget.complaintHeader,
+                        "State": changedValue,
+                        "Description": widget.description,
+                        "Student Reg. No.": widget.registrationNumber
+                      });
 
                       Navigator.pop(context);
                     },
