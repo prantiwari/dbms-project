@@ -1,3 +1,5 @@
+import 'package:dbmsj/screens/loadingscreen.dart';
+import 'package:dbmsj/screens/studentcomplaints.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,20 +11,35 @@ class Forms extends StatefulWidget {
 
 class _FormsState extends State<Forms> {
   final _firestore = Firestore.instance;
+  var complaintTypes = ['Electrical', 'House-Keeping', 'Mess', 'Miscellaneous'];
+
+  var registrationNo;
+  var complaintHeader;
+  var description;
 
   @override
   Widget build(BuildContext context) {
-    var complaintTypes = [
-      'Electrical',
-      'House-Keeping',
-      'Mess',
-      'Miscellaneous'
-    ];
+    void writeData() async {
+      await _firestore
+          .collection(widget.selected)
+          .document('Processing')
+          .collection('Complaints')
+          .add(
+        {
+          'Complaint': complaintHeader,
+          'Description': description,
+          'Student Reg. No.': registrationNo,
+          'State': 'Processing'
+        },
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StudentComplaints(),
+        ),
+      );
+    }
 
-    var registrationNo;
-    var complaintHeader;
-    var description;
-    void writeData() {}
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -89,23 +106,19 @@ class _FormsState extends State<Forms> {
                   ),
                 ),
                 Center(
-                  child: FlatButton(
-                      child: Icon(Icons.near_me, size: 50),
-                      onPressed: () {
-                        _firestore
-                            .collection(widget.selected)
-                            .document('Processing')
-                            .collection('Complaints')
-                            .add({
-                          'Complaint': complaintHeader,
-                          'Description': description,
-                          'Student Reg. No.': registrationNo,
-                          'State': 'Processing'
-                        });
+                  child: InkWell(
+                      child: Hero(
+                          tag: "icon",
+                          child: Icon(
+                            Icons.near_me,
+                            size: 50,
+                          )),
+                      onTap: () {
+                        writeData();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Forms(),
+                            builder: (context) => LoadingScreen(),
                           ),
                         );
                       }),

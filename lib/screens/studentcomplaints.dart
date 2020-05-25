@@ -18,8 +18,8 @@ class _ComplaintsState extends State<StudentComplaints> {
       appBar: AppBar(
         title: Text("Complaints"),
         actions: <Widget>[
-          GestureDetector(
-              child: Icon(Icons.near_me, size: 40),
+          InkWell(
+              child: Hero(tag: "icon", child: Icon(Icons.near_me, size: 40)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -34,11 +34,6 @@ class _ComplaintsState extends State<StudentComplaints> {
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
               stream: _firestore.collectionGroup("Complaints").snapshots(),
-              /*_firestore
-                  .collection('Electrical')
-                  .document('Electrical-Complaints')
-                  .collection('Unresolved')
-                  .snapshots(), */
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var messages = snapshot.data.documents;
@@ -74,7 +69,7 @@ class ComplaintCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.push(
             context,
