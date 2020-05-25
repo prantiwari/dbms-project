@@ -1,3 +1,4 @@
+import 'package:dbmsj/screens/form.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbmsj/complaint.dart';
@@ -14,6 +15,21 @@ class _ComplaintsState extends State<StudentComplaints> {
   Widget build(BuildContext context) {
     _firestore.collectionGroup("Complaints").snapshots();
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Complaints"),
+        actions: <Widget>[
+          GestureDetector(
+              child: Icon(Icons.near_me, size: 40),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Forms(),
+                  ),
+                );
+              })
+        ],
+      ),
       body: SafeArea(
         child: Container(
           child: StreamBuilder<QuerySnapshot>(

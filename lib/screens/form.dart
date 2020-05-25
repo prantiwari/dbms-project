@@ -22,6 +22,7 @@ class _FormsState extends State<Forms> {
     var registrationNo;
     var complaintHeader;
     var description;
+    void writeData() {}
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
