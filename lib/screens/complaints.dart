@@ -19,8 +19,8 @@ class _ComplaintsState extends State<Complaints> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Complaints"),
         actions: <Widget>[
+          SizedBox(width: 20),
           Container(
             margin: EdgeInsets.all(10),
             color: Colors.white,

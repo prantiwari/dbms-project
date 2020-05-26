@@ -1,14 +1,27 @@
 import 'package:dbmsj/screens/complaints.dart';
+import 'package:dbmsj/screens/loadingscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatelessWidget {
+  final _auth = FirebaseAuth.instance;
+  String emailId;
+  String password;
+
   @override
   Widget build(BuildContext context) {
-    final _auth = FirebaseAuth.instance;
-    String emailid;
-    String password;
+    void verify() async {
+      try {
+        final newUser = await _auth.signInWithEmailAndPassword(
+            email: emailId, password: password);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Complaints()));
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -29,7 +42,7 @@ class SignIn extends StatelessWidget {
                         border: OutlineInputBorder(),
                         hintText: 'youremailid@example.com'),
                     onChanged: (value) {
-                      emailid = value;
+                      emailId = value;
                     },
                   ),
                 ),
@@ -46,19 +59,19 @@ class SignIn extends StatelessWidget {
                   ),
                 ),
                 Center(
-                  child: FlatButton(
-                    child: Icon(Icons.near_me, size: 50),
-                    onPressed: () async {
-                      try {
-                        final newUser = await _auth.signInWithEmailAndPassword(
-                            email: emailid, password: password);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Complaints()));
-                      } catch (e) {
-                        print(e);
-                      }
+                  child: InkWell(
+                    child: Hero(
+                      tag: "icon",
+                      child: Icon(Icons.near_me, size: 50),
+                    ),
+                    onTap: () async {
+                      verify();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoadingScreen(),
+                        ),
+                      );
                     },
                   ),
                 )

@@ -6,9 +6,12 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = FirebaseAuth.instance;
-    String emailid;
+    String emailId;
     String password;
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Sign-Up"),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -28,7 +31,7 @@ class SignUp extends StatelessWidget {
                         border: OutlineInputBorder(),
                         hintText: 'youremailid@example.com'),
                     onChanged: (value) {
-                      emailid = value;
+                      emailId = value;
                     },
                   ),
                 ),
@@ -44,6 +47,31 @@ class SignUp extends StatelessWidget {
                     },
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Registration Number'),
+                    onChanged: (value) {
+                      //password = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(), hintText: 'Room Number'),
+                    onChanged: (value) {
+                      //password = value;
+                    },
+                  ),
+                ),
                 Center(
                   child: FlatButton(
                     child: Icon(Icons.near_me, size: 50),
@@ -51,7 +79,7 @@ class SignUp extends StatelessWidget {
                       try {
                         final newUser =
                             await _auth.createUserWithEmailAndPassword(
-                                email: emailid, password: password);
+                                email: emailId, password: password);
                       } catch (e) {
                         print(e);
                       }
