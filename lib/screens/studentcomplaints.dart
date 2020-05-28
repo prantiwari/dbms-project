@@ -19,15 +19,19 @@ class _ComplaintsState extends State<StudentComplaints> {
         title: Text("Complaints"),
         actions: <Widget>[
           InkWell(
-              child: Hero(tag: "icon", child: Icon(Icons.near_me, size: 40)),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Forms(),
-                  ),
-                );
-              })
+            child: Hero(
+              tag: "icon",
+              child: Icon(Icons.near_me, size: 40),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Forms(),
+                ),
+              );
+            },
+          )
         ],
       ),
       body: SafeArea(

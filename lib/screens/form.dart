@@ -22,7 +22,7 @@ class _FormsState extends State<Forms> {
     void writeData() async {
       await _firestore
           .collection(widget.selected)
-          .document('Processing')
+          .document('Unresolved')
           .collection('Complaints')
           .add(
         {

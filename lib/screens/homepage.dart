@@ -1,4 +1,7 @@
+import 'package:dbmsj/screens/form.dart';
 import 'package:dbmsj/screens/signin.dart';
+import 'package:dbmsj/screens/signup.dart';
+import 'package:dbmsj/screens/studentcomplaints.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +12,18 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         actions: <Widget>[
           SizedBox(width: 200),
-          Text(
-            "Create Account",
+          InkWell(
+            child: Text(
+              "Create Account",
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignUp(),
+                ),
+              );
+            },
           )
         ],
       ),
@@ -51,7 +64,12 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.0),
                     child: MaterialButton(
                       onPressed: () {
-                        // Navigator.pushNamed(context, LoginScreen.id);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StudentComplaints(),
+                          ),
+                        );
                       },
                       minWidth: 300.0,
                       height: 60.0,
