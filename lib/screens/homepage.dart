@@ -27,36 +27,13 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 150),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Material(
-                  elevation: 5.0,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignIn(),
-                        ),
-                      );
-                    },
-                    minWidth: 300.0,
-                    height: 60.0,
-                    child: Text(
-                      'Warden Log In',
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 150),
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Material(
                     elevation: 5.0,
@@ -67,21 +44,46 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => StudentComplaints(),
+                            builder: (context) => SignIn(),
                           ),
                         );
                       },
                       minWidth: 300.0,
                       height: 60.0,
                       child: Text(
-                        'Student Log In',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                        ),
+                        'Warden Log In',
+                        style: TextStyle(fontSize: 20.0),
                       ),
                     ),
-                  )),
-            ],
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Material(
+                      elevation: 5.0,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudentComplaints(),
+                            ),
+                          );
+                        },
+                        minWidth: 300.0,
+                        height: 60.0,
+                        child: Text(
+                          'Student Log In',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    )),
+              ],
+            ),
           ),
         ),
       ),

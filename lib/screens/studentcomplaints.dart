@@ -43,7 +43,8 @@ class _ComplaintsState extends State<StudentComplaints> {
                   var messages = snapshot.data.documents;
                   List<ComplaintCard> messageWidget = [];
                   for (var message in messages) {
-                    messageWidget.add(ComplaintCard(message));
+                    if (message['Student Reg. No.'])
+                      messageWidget.add(ComplaintCard(message));
                   }
                   return ListView(
                       padding: EdgeInsets.all(8), children: messageWidget);

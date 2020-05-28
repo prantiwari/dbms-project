@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbmsj/complaint.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Complaints extends StatefulWidget {
   var selectedCat = "House-Keeping";
@@ -17,11 +18,41 @@ class _ComplaintsState extends State<Complaints> {
 
   @override
   Widget build(BuildContext context) {
+    var _auth = FirebaseAuth.instance;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           //Icon(Icons.power_settings_new),
-
+          Builder(
+            builder: (BuildContext context) {
+              return InkWell(
+                child: Text("Log Out"),
+                onTap: () {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Theme.of(context).accentColor,
+                      content: Text(
+                        "Exit?",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      duration: Duration(seconds: 4),
+                      action: SnackBarAction(
+                        label: "Yes",
+                        textColor: Colors.white,
+                        onPressed: () {
+                          _auth.signOut();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           SizedBox(width: 20),
           Container(
             margin: EdgeInsets.all(10),
