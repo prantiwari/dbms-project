@@ -76,17 +76,16 @@ class _ComplaintsState extends State<StudentComplaints> {
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
               stream: _firestore
-                  .collection('Electrical')
-                  .document('Unresolved')
-                  .collection('Complaints')
-                  .orderBy('Created', descending: true)
+                  .collectionGroup('Complaints')
+                  .orderBy('Created')
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var messages = snapshot.data.documents;
                   List<ComplaintCard> messageWidget = [];
                   for (var message in messages) {
-                    messageWidget.add(ComplaintCard(message));
+                    if (message['Student Reg. No.'] == "17EEE1234")
+                      messageWidget.add(ComplaintCard(message));
                   }
                   return ListView(
                       padding: EdgeInsets.all(8), children: messageWidget);

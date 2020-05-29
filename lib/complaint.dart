@@ -96,8 +96,8 @@ class _ComplaintState extends State<Complaint> {
                 SizedBox(height: 20),
                 Text("Description: " + widget.description),
                 SizedBox(height: 20),
-                // Text("Created: " +
-                //     widget.message['Created'].toDate().toString()),
+                Text("Created: " +
+                    widget.message['Created'].toDate().toString()),
                 SizedBox(height: 20),
                 getWidget(widget.userType),
               ],
