@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignIn(),
+                            builder: (context) => SignIn("Warden"),
                           ),
                         );
                       },
@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => StudentComplaints(),
+                              builder: (context) => SignIn("Student"),
                             ),
                           );
                         },

@@ -10,7 +10,8 @@ class Complaint extends StatefulWidget {
   String documentId;
   String state;
   String complaintType;
-  Complaint(var message, String complaintType) {
+  String userType;
+  Complaint(var message, String complaintType, String userType) {
     this.message = message;
     this.description = message['Description'];
     this.registrationNumber = message['Student Reg. No.'];
@@ -18,6 +19,7 @@ class Complaint extends StatefulWidget {
     this.documentId = message.documentID;
     this.state = message['State'];
     this.complaintType = complaintType;
+    this.userType = userType;
   }
 
   @override
@@ -26,6 +28,51 @@ class Complaint extends StatefulWidget {
 
 class _ComplaintState extends State<Complaint> {
   var _firestore = Firestore.instance;
+
+  Widget getWidget(String userType) {
+    if (userType == "Warden") {
+      return Container(
+        color: Colors.white,
+        child: new DropdownButton<String>(
+          iconDisabledColor: Colors.white,
+          value: widget.state,
+          items: <String>['Unresolved', 'Processing', 'Resolved']
+              .map((String value) {
+            return new DropdownMenuItem<String>(
+              value: value,
+              child: new Text(value),
+            );
+          }).toList(),
+          onChanged: (changedValue) {
+            if (changedValue != widget.state)
+              _firestore
+                  .collection(widget.complaintType)
+                  .document(widget.state)
+                  .collection('Complaints')
+                  .document(widget.message.documentID)
+                  .delete();
+
+            _firestore
+                .collection(widget.complaintType)
+                .document(changedValue)
+                .collection('Complaints')
+                .add({
+              "Complaint": widget.complaintHeader,
+              "State": changedValue,
+              "Description": widget.description,
+              "Student Reg. No.": widget.registrationNumber
+            });
+
+            Navigator.pop(context);
+          },
+        ),
+      );
+    } else {
+      String state = widget.state;
+      return Text(" State: $state");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,42 +95,10 @@ class _ComplaintState extends State<Complaint> {
                 SizedBox(height: 20),
                 Text("Description: " + widget.description),
                 SizedBox(height: 20),
-                Container(
-                  color: Colors.white,
-                  child: new DropdownButton<String>(
-                    iconDisabledColor: Colors.white,
-                    value: widget.state,
-                    items: <String>['Unresolved', 'Processing', 'Resolved']
-                        .map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (changedValue) {
-                      if (changedValue != widget.state)
-                        _firestore
-                            .collection(widget.complaintType)
-                            .document(widget.state)
-                            .collection('Complaints')
-                            .document(widget.message.documentID)
-                            .delete();
-
-                      _firestore
-                          .collection(widget.complaintType)
-                          .document(changedValue)
-                          .collection('Complaints')
-                          .add({
-                        "Complaint": widget.complaintHeader,
-                        "State": changedValue,
-                        "Description": widget.description,
-                        "Student Reg. No.": widget.registrationNumber
-                      });
-
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
+                Text("Created: " +
+                    widget.message['Created'].toDate().toString()),
+                SizedBox(height: 20),
+                getWidget(widget.userType),
               ],
             ),
           ),

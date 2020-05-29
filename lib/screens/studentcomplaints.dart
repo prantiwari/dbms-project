@@ -13,9 +13,9 @@ class _ComplaintsState extends State<StudentComplaints> {
 
   @override
   Widget build(BuildContext context) {
-    _firestore.collectionGroup("Complaints").snapshots();
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Complaints"),
         actions: <Widget>[
           InkWell(
@@ -37,14 +37,18 @@ class _ComplaintsState extends State<StudentComplaints> {
       body: SafeArea(
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collectionGroup("Complaints").snapshots(),
+              stream: _firestore
+                  .collection('Electrical')
+                  .document('Unresolved')
+                  .collection('Complaints')
+                  .orderBy('Created', descending: true)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var messages = snapshot.data.documents;
                   List<ComplaintCard> messageWidget = [];
                   for (var message in messages) {
-                    if (message['Student Reg. No.'])
-                      messageWidget.add(ComplaintCard(message));
+                    messageWidget.add(ComplaintCard(message));
                   }
                   return ListView(
                       padding: EdgeInsets.all(8), children: messageWidget);
@@ -79,8 +83,8 @@ class ComplaintCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Complaint(message, "Processing"),
-            ));
+                builder: (context) =>
+                    Complaint(message, "Complaint", "Student")));
       },
       child: Container(
           margin: EdgeInsets.all(8),
@@ -96,6 +100,7 @@ class ComplaintCard extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 20),
                 Text(complaintHeader),
+                SizedBox(height: 20),
                 Text(registrationNumber),
               ],
             ),

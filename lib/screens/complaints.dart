@@ -44,7 +44,6 @@ class _ComplaintsState extends State<Complaints> {
                           _auth.signOut();
                           Navigator.pop(context);
                           Navigator.pop(context);
-                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -147,7 +146,7 @@ class ComplaintCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Complaint(message, complaintType),
+            builder: (context) => Complaint(message, complaintType, "Warden"),
           ),
         );
       },

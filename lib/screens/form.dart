@@ -29,9 +29,11 @@ class _FormsState extends State<Forms> {
           'Complaint': complaintHeader,
           'Description': description,
           'Student Reg. No.': registrationNo,
-          'State': 'Processing'
+          'State': 'Unresolved',
+          'Created': FieldValue.serverTimestamp()
         },
       );
+
       Navigator.push(
         context,
         MaterialPageRoute(
