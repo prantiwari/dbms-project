@@ -2,6 +2,7 @@ import 'package:dbmsj/screens/form.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbmsj/complaint.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class StudentComplaints extends StatefulWidget {
   @override
@@ -10,14 +11,51 @@ class StudentComplaints extends StatefulWidget {
 
 class _ComplaintsState extends State<StudentComplaints> {
   var _firestore = Firestore.instance;
+  var _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Complaints"),
         actions: <Widget>[
+          Builder(
+            builder: (BuildContext context) {
+              return InkWell(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Log Out",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Icon(Icons.power_settings_new)
+                  ],
+                ),
+                onTap: () {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Theme.of(context).accentColor,
+                      content: Text(
+                        "Exit?",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      duration: Duration(seconds: 4),
+                      action: SnackBarAction(
+                        label: "Yes",
+                        textColor: Colors.white,
+                        onPressed: () {
+                          _auth.signOut();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+          SizedBox(width: 280),
           InkWell(
             child: Hero(
               tag: "icon",

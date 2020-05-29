@@ -15,19 +15,25 @@ class _ComplaintsState extends State<Complaints> {
   var complaintState = ["Processing", "Resolved", "Unresolved"];
   var complaintTypes = ['Electrical', 'House-Keeping', 'Mess', 'Miscellaneous'];
   final _firestore = Firestore.instance;
-
+  var _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    var _auth = FirebaseAuth.instance;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          //Icon(Icons.power_settings_new),
           Builder(
             builder: (BuildContext context) {
               return InkWell(
-                child: Text("Log Out"),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Log Out",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Icon(Icons.power_settings_new)
+                  ],
+                ),
                 onTap: () {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
@@ -52,7 +58,9 @@ class _ComplaintsState extends State<Complaints> {
               );
             },
           ),
-          SizedBox(width: 20),
+          //Icon(Icons.power_settings_new),
+
+          SizedBox(width: 40),
           Container(
             margin: EdgeInsets.all(10),
             color: Colors.white,

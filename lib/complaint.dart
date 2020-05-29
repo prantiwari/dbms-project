@@ -60,7 +60,8 @@ class _ComplaintState extends State<Complaint> {
               "Complaint": widget.complaintHeader,
               "State": changedValue,
               "Description": widget.description,
-              "Student Reg. No.": widget.registrationNumber
+              "Student Reg. No.": widget.registrationNumber,
+              "Created": widget.message['Created']
             });
 
             Navigator.pop(context);
@@ -95,8 +96,8 @@ class _ComplaintState extends State<Complaint> {
                 SizedBox(height: 20),
                 Text("Description: " + widget.description),
                 SizedBox(height: 20),
-                Text("Created: " +
-                    widget.message['Created'].toDate().toString()),
+                // Text("Created: " +
+                //     widget.message['Created'].toDate().toString()),
                 SizedBox(height: 20),
                 getWidget(widget.userType),
               ],
