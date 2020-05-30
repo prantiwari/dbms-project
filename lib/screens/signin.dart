@@ -108,12 +108,6 @@ class _SignInState extends State<SignIn> {
                         });
 
                         verify();
-                        /*Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoadingScreen(),
-                          ),
-                        );*/
                       },
                     ),
                   )

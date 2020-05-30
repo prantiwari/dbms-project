@@ -59,17 +59,6 @@ class _FormsState extends State<Forms> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  /*Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Registration No.'),
-                      onChanged: (value) {
-                        registrationNo = value;
-                      },
-                    ),
-                  ),*/
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
