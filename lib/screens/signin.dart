@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:dbmsj/main.dart';
 
 class SignIn extends StatefulWidget {
   String userType;
@@ -18,6 +21,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _auth = FirebaseAuth.instance;
+  var _firestore = Firestore.instance;
 
   String emailId;
   String password;
@@ -32,9 +36,20 @@ class _SignInState extends State<SignIn> {
         if (widget.userType == "Warden")
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Complaints()));
-        else
+        else {
+          var users = (await _firestore
+                  .collection('Students')
+                  .where('emailID', isEqualTo: emailId)
+                  .getDocuments())
+              .documents;
+          for (var user in users) {
+            Provider.of<User>(context, listen: false)
+                .setValues(user['Room'], user['regNo']);
+          }
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => StudentComplaints()));
+        }
+
         setState(() {
           spin = false;
         });
@@ -109,6 +124,5 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
-    ;
   }
 }

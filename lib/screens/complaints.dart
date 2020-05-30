@@ -60,7 +60,7 @@ class _ComplaintsState extends State<Complaints> {
           ),
           //Icon(Icons.power_settings_new),
 
-          SizedBox(width: 40),
+          SizedBox(width: 30),
           Container(
             margin: EdgeInsets.all(10),
             color: Colors.white,
@@ -160,7 +160,7 @@ class ComplaintCard extends StatelessWidget {
       },
       child: Container(
           margin: EdgeInsets.all(8),
-          height: 100,
+          height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Color(0xFF1D1E33),
@@ -172,7 +172,9 @@ class ComplaintCard extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 20),
                 Text(complaintHeader),
-                Text(registrationNumber),
+                SizedBox(height: 20),
+                Text("Registration No: " + registrationNumber),
+                Text('Room No:' + message['Room']),
               ],
             ),
           )),

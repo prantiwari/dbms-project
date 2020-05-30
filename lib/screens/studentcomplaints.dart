@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbmsj/complaint.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:dbmsj/main.dart';
 
 class StudentComplaints extends StatefulWidget {
   @override
@@ -55,7 +57,7 @@ class _ComplaintsState extends State<StudentComplaints> {
               );
             },
           ),
-          SizedBox(width: 280),
+          SizedBox(width: 250),
           InkWell(
             child: Hero(
               tag: "icon",
@@ -84,7 +86,8 @@ class _ComplaintsState extends State<StudentComplaints> {
                   var messages = snapshot.data.documents;
                   List<ComplaintCard> messageWidget = [];
                   for (var message in messages) {
-                    if (message['Student Reg. No.'] == "17EEE1234")
+                    if (message['Student Reg. No.'] ==
+                        Provider.of<User>(context, listen: false).regNo)
                       messageWidget.add(ComplaintCard(message));
                   }
                   return ListView(

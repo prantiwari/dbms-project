@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class Complaint extends StatefulWidget {
   var message;
@@ -91,6 +92,8 @@ class _ComplaintState extends State<Complaint> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text("Registration Number: " + widget.registrationNumber),
+                SizedBox(height: 10),
+                Text("Room No: " + widget.message['Room']),
                 SizedBox(height: 10),
                 Text("Complaint Header: " + widget.complaintHeader),
                 SizedBox(height: 20),

@@ -1,8 +1,9 @@
-import 'package:dbmsj/screens/loadingscreen.dart';
 import 'package:dbmsj/screens/studentcomplaints.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:provider/provider.dart';
+import 'package:dbmsj/main.dart';
 
 class Forms extends StatefulWidget {
   @override
@@ -30,9 +31,10 @@ class _FormsState extends State<Forms> {
         {
           'Complaint': complaintHeader,
           'Description': description,
-          'Student Reg. No.': registrationNo,
+          'Student Reg. No.': Provider.of<User>(context, listen: false).regNo,
           'State': 'Unresolved',
-          'Created': FieldValue.serverTimestamp()
+          'Created': FieldValue.serverTimestamp(),
+          'Room': Provider.of<User>(context, listen: false).roomNo
         },
       );
 
@@ -57,7 +59,7 @@ class _FormsState extends State<Forms> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
+                  /*Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       decoration: InputDecoration(
@@ -67,7 +69,7 @@ class _FormsState extends State<Forms> {
                         registrationNo = value;
                       },
                     ),
-                  ),
+                  ),*/
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
