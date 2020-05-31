@@ -62,7 +62,8 @@ class _ComplaintState extends State<Complaint> {
               "State": changedValue,
               "Description": widget.description,
               "Student Reg. No.": widget.registrationNumber,
-              "Created": widget.message['Created']
+              "Created": widget.message['Created'],
+              "Room": widget.message['Room']
             });
 
             Navigator.pop(context);
