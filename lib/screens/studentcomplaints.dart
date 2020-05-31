@@ -79,7 +79,7 @@ class _ComplaintsState extends State<StudentComplaints> {
           child: StreamBuilder<QuerySnapshot>(
               stream: _firestore
                   .collectionGroup('Complaints')
-                  .orderBy('Created')
+                  .orderBy('Created', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {

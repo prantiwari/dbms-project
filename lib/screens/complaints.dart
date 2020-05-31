@@ -108,6 +108,7 @@ class _ComplaintsState extends State<Complaints> {
                   .collection(widget.selectedCat)
                   .document(widget.selectedState)
                   .collection('Complaints')
+                  .orderBy('Created', descending: true)
                   .snapshots(),
               //stream: _firestore.collection('complaints').snapshots(),
               builder: (context, snapshot) {

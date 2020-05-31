@@ -33,10 +33,20 @@ class _SignInState extends State<SignIn> {
       try {
         final newUser = await _auth.signInWithEmailAndPassword(
             email: emailId, password: password);
-        if (widget.userType == "Warden")
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Complaints()));
-        else {
+        if (widget.userType == "Warden") {
+          var users = (await _firestore
+                  .collection('Wardens')
+                  .where('emailID', isEqualTo: emailId)
+                  .getDocuments())
+              .documents;
+          if (!users.isEmpty) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Complaints()));
+            setState(() {
+              spin = false;
+            });
+          }
+        } else {
           var users = (await _firestore
                   .collection('Students')
                   .where('emailID', isEqualTo: emailId)
@@ -46,8 +56,13 @@ class _SignInState extends State<SignIn> {
             Provider.of<User>(context, listen: false)
                 .setValues(user['Room'], user['regNo']);
           }
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => StudentComplaints()));
+          if (!users.isEmpty) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => StudentComplaints()));
+            setState(() {
+              spin = false;
+            });
+          }
         }
 
         setState(() {
